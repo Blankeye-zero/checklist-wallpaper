@@ -1,0 +1,20 @@
+{
+  "name": "checklist-wallpaper",
+  "version": "0.1.0",
+  "description": "Windows CLI that renders a fuzzy-managed checklist as an Excalidraw-style desktop wallpaper",
+  "type": "module",
+  "bin": {
+    "todo": "./bin/todo.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@excalidraw/excalidraw": "^0.18.1",
+    "@inquirer/prompts": "^7.0.0",
+    "@resvg/resvg-js": "^2.4.0",
+    "commander": "^12.1.0",
+    "roughjs": "^4.6.6",
+    "wallpaper": "^7.3.1"
+  }
+}

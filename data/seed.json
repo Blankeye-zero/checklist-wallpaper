@@ -1,0 +1,43 @@
+{
+  "categories": [
+    {
+      "name": "9-5 Job Search",
+      "items": [
+        "Efficient Job Search & Apply Automation",
+        "Resume Update and Critic",
+        "System Design Interview Preparation",
+        "AWS SA Certification",
+        "Leetcode Python atleast 100 problems",
+        "Blog posts on my website about system design"
+      ]
+    },
+    {
+      "name": "Game Development",
+      "items": [
+        "Game Development Course go through",
+        "Leveraging X Platform to foster Distribution",
+        "Scope to create a small game that is replayable & fun",
+        "Game can possibly be played with friends",
+        "Game stays small (2 months time for dev)"
+      ]
+    },
+    {
+      "name": "Upwork Contracts",
+      "items": [
+        "Consolidate profile into niche with Cloud",
+        "Niche candidates: HIPAA + AWS impl, n8n & Whatsapp Automation, AWS Finops",
+        "Create highly personalized single bids per week",
+        "Set aside budget for connects",
+        "Leverage X Platform to foster distribution"
+      ]
+    },
+    {
+      "name": "Product Development",
+      "items": [
+        "Leverage Linkedin and X Platforms for Distribution with Organic Posts",
+        "Come up with a product that leverages Whatsapp similar to NagmeLater",
+        "Setup an LLC"
+      ]
+    }
+  ]
+}
