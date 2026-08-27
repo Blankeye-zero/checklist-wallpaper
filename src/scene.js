@@ -23,6 +23,8 @@ export function buildScene() {
   const checklist = loadChecklist();
   const config = getResolvedConfig();
   const theme = resolveTheme(config);
-  const layout = computeLayout(checklist, config);
+  // Hidden categories stay in the data but never reach the wallpaper.
+  const visible = { ...checklist, categories: checklist.categories.filter((c) => !c.hidden) };
+  const layout = computeLayout(visible, config);
   return { checklist, config, theme, layout };
 }

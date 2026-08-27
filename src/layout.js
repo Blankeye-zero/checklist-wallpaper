@@ -2,8 +2,8 @@
 // Produces positioned primitives consumed by both the SVG renderer
 // and the .excalidraw exporter.
 
-// Virgil average glyph width ≈ 0.52em (hand-drawn, wide-ish)
-const CHAR_W = 0.52;
+// 0xProto is monospace: advance width = 0.6em
+const CHAR_W = 0.6;
 
 export function measure(text, fontSize) {
   return text.length * fontSize * CHAR_W;

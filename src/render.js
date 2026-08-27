@@ -56,7 +56,7 @@ function strikePath(x1, y1, x2, y2, stroke, scale) {
 }
 
 function textEl(x, y, text, fontSize, fill, anchor = 'start', opacity = 1) {
-  return `<text x="${f(x)}" y="${f(y)}" font-family="Virgil" font-size="${f(fontSize)}" ` +
+  return `<text x="${f(x)}" y="${f(y)}" font-family="0xProto" font-size="${f(fontSize)}" ` +
     `fill="${fill}" text-anchor="${anchor}" opacity="${opacity}">${esc(text)}</text>`;
 }
 

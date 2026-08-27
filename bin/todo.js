@@ -24,7 +24,7 @@ program
     const cl = loadChecklist();
     console.log(DIM(`set: ${getActiveSet()}`));
     for (const cat of cl.categories) {
-      console.log(BOLD(cat.name));
+      console.log(BOLD(cat.name) + (cat.hidden ? DIM('  (hidden)') : ''));
       cat.items.forEach((it, i) => {
         const line = `  ${i + 1}. ${it.text}`;
         console.log(it.done ? DIM(`  ${i + 1}. ${STRIKE(it.text)}`) : line);
@@ -164,6 +164,36 @@ cat.command('swap')
     console.log(`⇄ swapped: [${catA.name}] ↔ [${catB.name}]`);
     await refresh();
   });
+
+// ---------- hide / unhide ----------
+async function hideAction(queryParts, hidden) {
+  const cl = loadChecklist();
+  const query = queryParts?.join(' ');
+  // hide: resolve among visible; unhide: resolve among hidden
+  const pool = { ...cl, categories: cl.categories.filter((c) => hidden ? !c.hidden : c.hidden) };
+  const verb = hidden ? 'Hide' : 'Unhide';
+  const target = await resolveCategory(pool, query, `${verb} which category?`);
+  if (!target) die(pool.categories.length === 0
+    ? (hidden ? 'Nothing to hide — all categories are already hidden.' : 'No hidden categories.')
+    : `No category matches "${query}"`);
+  const cat = cl.categories.find((c) => c.id === target.id);
+  cat.hidden = hidden;
+  saveChecklist(cl);
+  console.log(`${hidden ? '◌ hidden' : '◉ visible'}: [${cat.name}]`);
+  await refresh();
+}
+
+program
+  .command('hide')
+  .description('Hide a category from the wallpaper (keeps its items; fuzzy query or picker)')
+  .argument('[query...]', 'fuzzy category query')
+  .action((q) => hideAction(q, true));
+
+program
+  .command('unhide')
+  .description('Show a hidden category again (fuzzy query or picker)')
+  .argument('[query...]', 'fuzzy category query')
+  .action((q) => hideAction(q, false));
 
 // ---------- set ----------
 const set = program.command('set').description('Manage named checklist sets (e.g. Personal / Work)');

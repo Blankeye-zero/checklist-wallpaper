@@ -39,6 +39,8 @@ On first run the checklist seeds the 5 categories from `To be Done.excalidraw`.
 | `todo cat add "<name>"` | Add a category |
 | `todo cat rm <query> [--yes]` | Remove a category (asks to confirm) |
 | `todo cat swap <a> <b>` | Swap the display order of two categories (fuzzy names) |
+| `todo hide [query]` | Hide a category from the wallpaper (keeps its items; fuzzy or picker) |
+| `todo unhide [query]` | Show a hidden category again |
 | `todo tick <query> [--cat <query>]` | Fuzzy-tick item(s) → strikethrough + wallpaper refresh |
 | `todo untick <query> [--cat <query>]` | Remove strikethrough |
 | `todo clean [--cat <query>]` | Delete all struck-through items, renumber, refresh |

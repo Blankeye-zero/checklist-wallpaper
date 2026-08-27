@@ -9,7 +9,7 @@ import { buildScene } from './scene.js';
 import { renderSvg } from './render.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const FONT_FILE = path.join(__dirname, '..', 'assets', 'fonts', 'Virgil-Regular.ttf');
+const FONT_FILE = path.join(__dirname, '..', 'assets', 'fonts', '0xProto-Regular.ttf');
 
 export function detectResolution() {
   try {
@@ -29,7 +29,7 @@ function rasterize(svg, background) {
     fitTo: { mode: 'original' },
     font: {
       fontFiles: [FONT_FILE],
-      defaultFontFamily: 'Virgil',
+      defaultFontFamily: '0xProto',
       loadSystemFonts: false,
     },
     background,

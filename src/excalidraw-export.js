@@ -39,7 +39,7 @@ function textEl(x, y, text, fontSize, color) {
     ...el,
     text,
     fontSize,
-    fontFamily: 5, // Virgil
+    fontFamily: 3, // monospace (closest built-in to 0xProto)
     textAlign: 'left',
     verticalAlign: 'top',
     containerId: null,
