@@ -4,7 +4,6 @@ A Windows CLI that manages a categorized checklist and renders it as your deskto
 wallpaper in an Excalidraw-like hand-drawn style (rough.js strokes + Virgil font,
 dark-mode with switchable terminal/neovim palettes).
 
-![reference](To%20be%20Done.png)
 
 ## Install
 
@@ -35,8 +34,11 @@ On first run the checklist seeds the 5 categories from `To be Done.excalidraw`.
 | `todo set rename <query> <new name>` | Rename a set |
 | `todo set rm <query> [--yes]` | Delete a set (asks to confirm) |
 | `todo add "<text>" [--cat <query>]` | Add an item; fuzzy category or interactive picker |
+| `todo rm <query> [--cat <query>]` | Remove item(s) — fuzzy, or a number within a category (`todo rm 2 --cat job`) |
+| `todo edit <n> "<new text>" [--cat <query>]` | Edit an item's text by its number (`todo edit 2 "New text" --cat job`) |
 | `todo cat add "<name>"` | Add a category |
 | `todo cat rm <query> [--yes]` | Remove a category (asks to confirm) |
+| `todo cat swap <a> <b>` | Swap the display order of two categories (fuzzy names) |
 | `todo tick <query> [--cat <query>]` | Fuzzy-tick item(s) → strikethrough + wallpaper refresh |
 | `todo untick <query> [--cat <query>]` | Remove strikethrough |
 | `todo clean [--cat <query>]` | Delete all struck-through items, renumber, refresh |

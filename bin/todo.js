@@ -52,6 +52,70 @@ program
     await refresh();
   });
 
+// ---------- rm ----------
+program
+  .command('rm')
+  .description('Remove item(s) — fuzzy query, or a number within a category (todo rm 2 --cat job)')
+  .argument('<query...>', 'fuzzy item query, or an item number')
+  .option('--cat <query>', 'restrict to a category (required for number mode unless only one exists)')
+  .action(async (queryParts, opts) => {
+    const cl = loadChecklist();
+    const query = queryParts.join(' ');
+
+    // numeric mode: index within a category, as shown by `todo list`
+    if (/^\d+$/.test(query)) {
+      const cat = await resolveCategory(cl, opts.cat, 'Remove from which category?');
+      if (!cat) die(opts.cat ? `No category matches "${opts.cat}"` : 'No categories yet.');
+      const idx = parseInt(query, 10) - 1;
+      if (idx < 0 || idx >= cat.items.length) {
+        die(`No item #${query} in [${cat.name}] (has ${cat.items.length} items).`);
+      }
+      const [removed] = cat.items.splice(idx, 1);
+      saveChecklist(cl);
+      console.log(`✗ removed: [${cat.name}] ${removed.text}`);
+      await refresh();
+      return;
+    }
+
+    // fuzzy mode
+    const matches = await resolveItems(cl, query, opts.cat);
+    if (matches.length === 0) {
+      die(`No item matches "${query}"${opts.cat ? ` in category "${opts.cat}"` : ''}`);
+    }
+    for (const m of matches) {
+      m.category.items = m.category.items.filter((i) => i.id !== m.item.id);
+      console.log(`✗ removed: [${m.category.name}] ${m.item.text}`);
+    }
+    saveChecklist(cl);
+    await refresh(true);
+  });
+
+// ---------- edit ----------
+program
+  .command('edit')
+  .description('Edit an item\'s text by its number in a category (as shown by `todo list`)')
+  .argument('<number>', 'item number')
+  .argument('<text...>', 'new item text')
+  .option('--cat <query>', 'category (fuzzy; required unless only one exists)')
+  .action(async (num, textParts, opts) => {
+    if (!/^\d+$/.test(num)) die('First argument must be an item number, e.g. todo edit 2 "New text" --cat job');
+    const cl = loadChecklist();
+    const cat = await resolveCategory(cl, opts.cat, 'Edit in which category?');
+    if (!cat) die(opts.cat ? `No category matches "${opts.cat}"` : 'No categories yet.');
+    const idx = parseInt(num, 10) - 1;
+    if (idx < 0 || idx >= cat.items.length) {
+      die(`No item #${num} in [${cat.name}] (has ${cat.items.length} items).`);
+    }
+    const item = cat.items[idx];
+    const before = item.text;
+    item.text = textParts.join(' ');
+    saveChecklist(cl);
+    console.log(`✎ edited: [${cat.name}]`);
+    console.log(DIM(`  - ${before}`));
+    console.log(`  + ${item.text}`);
+    await refresh();
+  });
+
 // ---------- cat ----------
 const cat = program.command('cat').description('Manage categories');
 
@@ -79,6 +143,25 @@ cat.command('rm')
     cl.categories = cl.categories.filter((c) => c.id !== target.id);
     saveChecklist(cl);
     console.log(`Removed: ${target.name}`);
+    await refresh();
+  });
+
+cat.command('swap')
+  .description('Swap the display order of two categories (fuzzy names)')
+  .argument('<a>', 'first category (fuzzy)')
+  .argument('<b>', 'second category (fuzzy)')
+  .action(async (a, b) => {
+    const cl = loadChecklist();
+    const catA = await resolveCategory(cl, a, 'Swap which category? (first)');
+    if (!catA) die(`No category matches "${a}"`);
+    const catB = await resolveCategory(cl, b, 'Swap with which category? (second)');
+    if (!catB) die(`No category matches "${b}"`);
+    if (catA.id === catB.id) die('Cannot swap a category with itself.');
+    const i = cl.categories.findIndex((c) => c.id === catA.id);
+    const j = cl.categories.findIndex((c) => c.id === catB.id);
+    [cl.categories[i], cl.categories[j]] = [cl.categories[j], cl.categories[i]];
+    saveChecklist(cl);
+    console.log(`⇄ swapped: [${catA.name}] ↔ [${catB.name}]`);
     await refresh();
   });
 
